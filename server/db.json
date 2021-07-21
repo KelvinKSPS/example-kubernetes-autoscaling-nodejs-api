@@ -1,0 +1,311 @@
+{
+  "devtestbr": [
+    {
+      "id": 1,
+      "title": "Testes Automatizados com o Selenium",
+      "themes": [
+        "Web Automation"
+      ],
+      "local": "Castelo Creative Space",
+      "sponsors": []
+    },
+    {
+      "id": 2,
+      "title": "Utilizando BDD com JBehave",
+      "themes": [
+        "Tooling"
+      ],
+      "local": "Castelo Creative Space",
+      "sponsors": []
+    },
+    {
+      "id": 3,
+      "title": "BDD com Cucumber",
+      "themes": [
+        "Tooling"
+      ],
+      "local": "Castelo Creative Space",
+      "sponsors": []
+    },
+    {
+      "id": 4,
+      "title": "Review 2017 - Planning 2018",
+      "themes": [
+        "Strategy"
+      ],
+      "local": "Castelo Creative Space",
+      "sponsors": []
+    },
+    {
+      "id": 5,
+      "title": "Precisamos falar sobre testes",
+      "themes": [
+        "Test"
+      ],
+      "local": "Castelo Creative Space",
+      "sponsors": []
+    },
+    {
+      "id": 6,
+      "title": "Automatizando meus testes E2E",
+      "themes": [
+        "Front"
+      ],
+      "local": "Castelo Creative Space",
+      "sponsors": []
+    },
+    {
+      "id": 7,
+      "title": "Introdução ao BDD e Test Automation com JBehave",
+      "themes": [
+        "Web Automation"
+      ],
+      "local": "Castelo Creative Space",
+      "sponsors": []
+    },
+    {
+      "id": 8,
+      "title": "Automação de Testes no Devops",
+      "themes": [
+        "Devops"
+      ],
+      "local": "Castelo Creative Space",
+      "sponsors": [
+        "ninja house"
+      ]
+    },
+    {
+      "id": 9,
+      "title": "Performance e Planejamento de Testes",
+      "themes": [
+        "Strategy"
+      ],
+      "local": "HST",
+      "sponsors": [
+        "HST"
+      ]
+    },
+    {
+      "id": 10,
+      "title": "Escalando Testes na Daitan",
+      "themes": [
+        "Strategy"
+      ],
+      "local": "Castelo Creative Space",
+      "sponsors": [
+        "Daitan Group"
+      ]
+    },
+    {
+      "id": 11,
+      "title": "Automação em Sprints e Unit Testing",
+      "themes": [
+        "Strategy"
+      ],
+      "local": "Weme",
+      "sponsors": [
+        "Weme"
+      ]
+    },
+    {
+      "id": 12,
+      "title": "Métricas, Performance e Espresso",
+      "themes": [
+        "Performance",
+        "Strategy"
+      ],
+      "local": "Ci&T",
+      "sponsors": [
+        "Ci&T"
+      ]
+    },
+    {
+      "id": 13,
+      "title": "Teste de UI e Processos de Teste",
+      "themes": [
+        "Test",
+        "Strategy"
+      ],
+      "local": "Venturus",
+      "sponsors": [
+        "Venturus"
+      ]
+    },
+    {
+      "id": 14,
+      "title": "TestCast: Carreira",
+      "themes": [
+        "Career"
+      ],
+      "local": "HST",
+      "sponsors": [
+        "HST"
+      ]
+    },
+    {
+      "id": 15,
+      "title": "BDD: Você está fazendo isto errado!",
+      "themes": [
+        "Strategy"
+      ],
+      "local": "Unisal",
+      "sponsors": [
+        "Unisal",
+        "Sofist"
+      ]
+    },
+    {
+      "id": 16,
+      "title": "Testando APIs de forma efetiva",
+      "themes": [
+        "Backend Automation"
+      ],
+      "local": "Sensedia",
+      "sponsors": [
+        "Sensedia"
+      ]
+    },
+    {
+      "id": 17,
+      "title": "Inteligência Artificial e Testes in a Nutshell",
+      "themes": [
+        "Strategy"
+      ],
+      "local": "Assertiva",
+      "sponsors": [
+        "Assertiva"
+      ]
+    },
+    {
+      "id": 18,
+      "title": "Testes de Integração em microservices",
+      "themes": [
+        "Backend Automation"
+      ],
+      "local": "Castelo Creative Space",
+      "sponsors": []
+    },
+    {
+      "id": 19,
+      "title": "Testes de Carga e Espresso",
+      "themes": [
+        "Mobile Automation",
+        "Performance"
+      ],
+      "local": "iFood",
+      "sponsors": [
+        "iFood"
+      ]
+    },
+    {
+      "id": 20,
+      "title": "Cypress para E2E e o que Automatizar",
+      "themes": [
+        "Web Automation",
+        "Strategy"
+      ],
+      "local": "Castelo Creative Space",
+      "sponsors": []
+    },
+    {
+      "id": 21,
+      "title": "Acessibilidade Digital e Testes de UI com XCTestCase",
+      "themes": [
+        "Mobile Automation"
+      ],
+      "local": "Zup",
+      "sponsors": [
+        "Zup"
+      ]
+    },
+    {
+      "id": 22,
+      "title": "Processo QA e Vagrant",
+      "themes": [
+        "Strategy"
+      ],
+      "local": "Venturus",
+      "sponsors": [
+        "Venturus",
+        "BEES"
+      ]
+    },
+    {
+      "id": 23,
+      "title": "QA Test Labs, Automatizando 'Tudo' e JMeter",
+      "themes": [
+        "Strategy",
+        "Desktop Automation",
+        "Performance",
+        "Devops"
+      ],
+      "local": "SiDi",
+      "sponsors": [
+        "SiDi"
+      ]
+    },
+    {
+      "id": 24,
+      "title": "Otimizando QA em Times Ágeis",
+      "themes": [
+        "Strategy"
+      ],
+      "local": "Online",
+      "sponsors": [
+        "IMA"
+      ]
+    },
+    {
+      "id": 25,
+      "title": "Introdução a frameworks nativos para Android e iOS",
+      "themes": [
+        "Mobile Automation"
+      ],
+      "local": "Online",
+      "sponsors": []
+    },
+    {
+      "id": 26,
+      "title": "7 Formas de falhar miseravelmente ao testar API",
+      "themes": [
+        "Strategy"
+      ],
+      "local": "Online",
+      "sponsors": []
+    },
+    {
+      "id": 27,
+      "title": "UX, Heurísticas de Nielsen e o time de Dev",
+      "themes": [
+        "Strategy"
+      ],
+      "local": "Online",
+      "sponsors": [
+        "Sofist"
+      ]
+    },
+    {
+      "id": 28,
+      "title": "Como implementar teste de contrato com Pact",
+      "themes": [
+        "Backend Automation"
+      ],
+      "local": "Online",
+      "sponsors": []
+    },
+    {
+      "id": 29,
+      "title": "k6: Fundamentos, Performance e Monitoramento do HPA no Kubernetes",
+      "themes": [
+        "Performance",
+        "Devops",
+        "Monitoring",
+        "Strategy"
+      ],
+      "local": "Online",
+      "sponsors": [
+        "BEES"
+      ]
+    }
+  ]
+}
