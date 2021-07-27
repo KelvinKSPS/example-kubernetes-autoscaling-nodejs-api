@@ -350,7 +350,7 @@
       },
       "id": 14,
       "panels": [],
-      "title": "Crocodile Prometheus Metrics",
+      "title": "devtestbr Prometheus Metrics",
       "type": "row"
     },
     {
@@ -1023,7 +1023,7 @@
           "pluginVersion": "6.7.3",
           "targets": [
             {
-              "expr": "count(kube_pod_container_info{container=\"crocodile\"})",
+              "expr": "count(kube_pod_container_info{container=\"devtestbr\"})",
               "instant": false,
               "interval": "",
               "legendFormat": "",
@@ -1032,7 +1032,7 @@
           ],
           "timeFrom": null,
           "timeShift": null,
-          "title": "Total Crocodile Pods",
+          "title": "Total devtestbr Pods",
           "type": "gauge"
         }
       ],
@@ -1114,7 +1114,7 @@
     ]
   },
   "timezone": "",
-  "title": "Crocodile Metrics dashboard",
+  "title": "devtestbr Metrics dashboard",
   "uid": "n1copReWk",
   "variables": {
     "list": []
