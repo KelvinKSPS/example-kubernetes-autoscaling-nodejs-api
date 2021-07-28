@@ -291,7 +291,11 @@
         "Backend Automation"
       ],
       "local": "Online",
-      "sponsors": []
+      "sponsors": [
+        "JetBrains",
+        "Sofist",
+        "Sensedia"
+      ]
     },
     {
       "id": 29,
@@ -304,7 +308,10 @@
       ],
       "local": "Online",
       "sponsors": [
-        "BEES"
+        "BEES",
+        "JetBrains",
+        "Sofist",
+        "Sensedia"
       ]
     }
   ]

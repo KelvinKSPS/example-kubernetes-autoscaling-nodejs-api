@@ -8,7 +8,7 @@
     "dev": "nodemon server/server.js"
   },
   "keywords": [],
-  "author": "Michael Wanyoike",
+  "author": "Kelvin, credits to Michael Wanyoike for the awesome article from k6 website!",
   "license": "MIT",
   "dependencies": {
     "@tailorbrands/node-exporter-prometheus": "^2.0.6",
