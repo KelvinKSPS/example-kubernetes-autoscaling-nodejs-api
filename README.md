@@ -1,132 +1,223 @@
-# Node API Auto Scaling Example
+# k6 & Prometheus & Keda & Kubernetes: Configurando, monitorando e testando um HPA no Kubernetes
 
-This is an example project that demonstrates how to auto scale an application running in Kubernetes using Keda.
+Este é um projeto de exemplo que demonstra como testar o auto-scaling do Keda no Kubernetes.
+Este projeto é um fork [deste artigo do k6](https://dev.to/k6/how-to-autoscale-kubernetes-pods-with-keda-testing-with-k6-4nl9), com as adições dos seguintes itens:
 
-## Prerequisites
+- Adicionando detalhes para configurar o auto-scaling de forma didática
+- Atualizando o yaml do Keda para ser compatível com a versão 2.0
+- Utilizando inFlux DB 2.0 e adicionando as configurações necessárias
+- Adicionadas as configurações para configurar o Prometheus corretamente
+- Utilizando um server com dados de todas as edições do MeetUp DevTest BR
 
-You'll need to have the following installed:
+
+## Pré-requisitos
+
+Você precisará instalar os seguintes itens:
 
 - [k6](https://k6.io/docs/getting-started/installation)
 - Node.js
 - Docker
-- GNU Make
+- GNU Make ou XCode (Mac)
 - [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
 - [Minikube](https://kubernetes.io/docs/tasks/tools/install-minikube/)
 
-Here's a handy tutorial for [Ubuntu 18:04](https://computingforgeeks.com/how-to-install-minikube-on-ubuntu-18-04/) users. The instructions written for this project are meant for `minikube`. However, they can be modified to adapt to a different Kubernetes implementation.
+Se precisar, [existe este tutorial para instalar o minikube para usuários do Ubuntu 18:04](https://computingforgeeks.com/how-to-install-minikube-on-ubuntu-18-04/).
 
-## ENVIRONMENT SETUP
+Vale ressaltar que o Minikube não é mandatório, e sim qualquer gerenciador ou cliente Kubernetes. Vale também para K3s ou MicroK8.
 
-### 1. Configure Minikube
 
-Once your minikube is up and running, enable the following addons:
+## Configurando o Ambiente
 
-```bash
-$ minikube addons enable dashboard
-$ minikube addons enable ingress # optional
-$ minikube addons enable ingress-dns # optional
+### 0. Clone este repositório
+Clonar o repositório do exemplo.​
+​
+
+``` bash
+$ git clone​
+https://github.com/KelvinKSPS/example-kubernetes-autoscaling-nodejs-api
+```
+​
+
+Acompanhar post que motivou este exemplo da apresentação:​
+​
+``` bash
+$ open shorturl.at/psLOT​
 ```
 
-To access dashboard, type the following command from a terminal: `minikube dashboard`. You'll need to open a separate terminal and execute the following:
+### 1. Server
+Vamos usar um servidor em NodeJS que gerencia os dados de todos os eventos do DevTestBR. Vamos adicionar as métricas preparadas para o Prometheus - uma plataforma open source de monitoramento.​
+
+> NodeJS: Plataforma assíncrona orientada à eventos criada para desenvolver sistemas escaláveis em Javascript
+​
+
+
+
+### 2. Minikube
+
+O Minikube é uma implementação leve do Kubernetes que cria uma VM em sua máquina local e implanta um cluster simples contendo apenas um nó. O Minikube está disponível para sistemas Linux, macOS e Windows.
+
+> Kubernetes, basicamente, é uma plataforma de código aberto que automatiza a implantação, dimensiona e gerencia aplicativos em contêineres. ​
+
+Uma vez instalado o minikube (consulte seu OS), iremos usar o kubectl.
+
+> Kubectl é um utilitário de linha de comando que se conecta ao servidor API, usado pelos administradores para criar pods, deployments, serviços, etc. Vamos usa-lo bastante para gerenciar nosso cluster.​
 
 ```bash
-minikube tunnel
+
+
+# habilitando o dashboard do kubernetes​
+$ minikube addons enable dashboard​
+​
+# habilitando o ingress, uma interface via API para definir regras e permitir acesso externo para os serviços dentro do cluster:​
+$ minikube addons enable ingress ​
+$ minikube addons enable ingress-dns ​
+​
+# habilitando o tunnel para acessar as portas do cluster através da web:​
+$ minikube tunnel​
+​
+# acessando o dashboard do kubernetes​
+$ minikube dashboard
+
+
 ```
 
-This will allow you to easily access `ClusterPort` services via your web browser.
+### 4. Deploy do Kube State Metrics Server
 
-### 2. Deploy Prometheus, and Kube State Metrics Server
-
-We need to be able to collect and track metrics about our application. We'll use the following:
-
-- [Kube State metrics](https://github.com/kubernetes/kube-state-metrics): This is a service that extracts various metrics about all Kubernetes API objects such as deployments, pods e.t.c. Follow these [instructions](https://devopscube.com/setup-kube-state-metrics/) to deploy Kube State Metrics server to minikube.
-
-- [Prometheus](https://prometheus.io/) is an open source monitoring framework that scrapes(collects) metrics data from various sources such as the Kube State Metrics server. We can use it's query language to extract the information we need to determine if our application needs to be extracted. Use these [instructions](https://devopscube.com/setup-prometheus-monitoring-on-kubernetes/) to deploy Prometheus to minikube.
-
-### 3. Install InfluxDb and Grafana Locally
-
-We can deploy InfluxDb and Grafana to Kubernetes as well. However, it's faster installing them locally:
-
-- InfluxDB
-- Grafana
-
-Ensure the above services are running. If you are on Linux, you can start with the command:
+> kube State Metrics coleta várias métrricas sobre os serviços que estão rodando no Kubernetes, através das APIs.​
 
 ```bash
-sudo systemctl start influxdb grafana-server
+
+# Clona o repositório do kube State Metrics​
+$ git clone https://github.com/devopscube/kube-state-metrics-configs.git​
+​
+# Cria os objetos do repositório recém criado:​
+$ kubectl apply -f kube-state-metrics-configs/​
+​
+
+# Verifica se o deploy foi realizado corretamente.​
+
+$ kubectl get deployments kube-state-metrics -n kube-system
+
+
 ```
 
-Once Grafana is installed, you'll need to add **Prometheus** and **InfluxDB** as a data source.
 
-### 4. Deploy Keda
+### 5. Deploy do Prometheus​
 
-- [Keda]() will scale up or down our application based on the threshold we provide it. Follow these [instructions](https://keda.sh/docs/deploy/#yaml) to deploy Keda to minikube.
-
-At this point, Keda isn't configured to do anything.
-
-### 5. Deploy Application
-
-Execute the following commands to download and run the project in your workspace:
+> Prometheus é uma ferramenta open source para monitoramento de dados. Na pasta raíz do projeto:​
 
 ```bash
-git clone git@github.com:k6io/example-kubernetes-autoscaling-nodejs-api.git
-cd test-node-api-k6
-npm i
-npm run dev
+# Criar um namespace no kubernetes​
+$ kubectl create namespace monitoring​
+​
+# Criar um clusterRole​
+$ kubeclt create –f prometheus/clusterRole.yaml​
+​
+# Criar um Config Map para não precisar buildar o Prometheus toda hora que for # adicionar ou remover configurações​
+$ kubectl create –f prometheus/config-map.yaml​
+​
+# Enfim, deploy do prometheus​
+$ kubectl create  -f prometheus/prometheus-deployment.yaml ​
+
 ```
 
-Point your browser URL to `localhost:4000`. Any changes you make to your source code will restart the server. You can also test the API from your command line like this:
+### 6. Externalizar Prometheus
 
-```bash
-curl http://localhost:4000/crocodile
+Externalizando o Prometheus, podemos acessar o mesmo do lado de fora do k8s.​
+
+``` bash
+
+# Copiar o nome da pod do Prometheus​
+$ kubectl get pods --namespace=monitoring​
+​
+# Criar o encaminhamento de porta pelo kubectl​
+$ kubectl port-forward prometheus-monitoring-<id-da-pod> 8080:9090 -n monitoring​
+
 ```
 
-Next, deploy the application to Minikube, your Kubernetes node. Lucky for you, I've simplified the process. Just execute this one command:
 
-```bash
-make image # build and upload docker image to minikube environment
-make apply # deploy crocodile-api and expose service
+### 7. Instalar influxDB (V1) e Grafana (localmente ou no kubernetes)
+
+> InfluxDB => É um banco de dados de código aberto designado para lidar com um alto volume de consultas e escritas por segundo sem causar muito impacto no sistema operaciona​
+​
+
+
+> Grafana => O Grafana é uma plataforma para visualizar e analisar métricas por meio de gráficos. Ele tem suporte para diversos tipos de bancos de dados — tanto gratuitos quanto pagos —, e pode ser instalado em qualquer sistema operacional.​
+
+
+Usaremos o Grafana para visualizar os dados, enquando usaremos o influxDB para armazenar os dados do teste.
+
+### 8. Adicionar dados do Grafana
+Iremos indicar ao Grafana as fontes de dados que devem ser monitoradas.​
+No Grafana, vá em Configuration > Data Sources. Adicione os seguintes sources:​
+
+ ```​
+influxDB:​
+​
+Name: InfluxDB-K6​
+
+URL: http://localhost:8086​
+
+Access: Server​
+
+Database: k6​
+
+HTTP Method: GET​
+
+Min time interval: 5s
 ```
 
-If you don't have GNU make on you platform, simply execute the following commands in a new terminal:
+```
+​
+Prometheus:​
+​
+*Name: InfluxDB-K6​
 
-```bash
-# build and upload docker image to minikube environment
-eval $(minikube docker-env)
-docker image prune -f
-docker build -t brandiqa/crocodile-api .
+URL: http://<prometheus ip address>:8080/​
 
-# deploy crocodile-api and expose service
-kubectl apply -f deploy/crocodile-deployment.yml
+Access: Server​
+
+Scrape interval: 5s​
+
+Query timeout: 30s​
+
+HTTP Method: GET​
+
+​
 ```
 
-Execute the command to command `kubectl get pods` to confirm the pod is running.
+### 9. Configurando o KEDA
 
-[todo screenshot]
+KEDA significa Kubernetes Event Driven Autoscaler. ​
+​
+Com o KEDA, podemos configurar nossas pods ou ​
+nossos deployments para escalar ​
+conforme regras que estabelecemos.​​
 
-Execute the command to command `kubectl get services` to confirm the service is running. To ensure the service is exposed, perform a curl operation:
+```
+# Deploy KEDA to Kubernetes​
+$ kubectl apply -f https://github.com/kedacore/keda/releases/download/v2.2.0/keda-2.2.0.yaml​
+```
+​
+### 10. Dashboard
 
-```bash
-curl 10.98.55.109:4000/crocodiles # replace ip address
+No Grafana, selecione para importar um Dashboard e selecione o arquivo grafana/devtestbr-metrics-dashboard.json​
+
+### 11. Enfim, vamos testar!!
+
+```# Pegar o IP do serviço​
+$ kubectl get services​
+
+​
+
+ENDPOINT=http://{ip serviço}:4000/devtestbr k6 run -o influxdb=http://localhost:8086/k6 performance-test.js​
+​
+ou​
+​
+ENDPOINT=http://{ip serviço}:4000/devtestbr k6 run performance-test.js​
 ```
 
-If you get a timeout, ensure `minikube tunnel` is running on a separate terminal.
 
-### 6. Run Load Testing without AutoScaling
+Iremos verificar o auto-scalling acontecendo conforme as configurações que você preferir, no KEDA.
 
-In this step, will run load testing test and send metrics to `influxdb`. Navigate to the root of the project and execute:
-
-```bash
-# replace ip address
-ENDPOINT=http://10.98.55.109:4000/crocodiles k6 run -o influxdb=http://localhost:8086/k6 performance-test.js
-```
-
-### 7. Run Load Testing WITH AutoScaling
-
-First deploy Keda's `scaledobject` configuration that scales up the project if the Prometheus expression, `sum(rate(node_http_requests_total[2m]))` exceeds 50 HTTP requests per second.
-
-```bash
-kubectl deploy -f keda/keda-prometheus-scaledobject.yml
-```
-
-Next, run the `performance-test.js` again. You should see the number of pods gradually increase as traffic increases.
+Abra o Grafana e veja a mágica!
